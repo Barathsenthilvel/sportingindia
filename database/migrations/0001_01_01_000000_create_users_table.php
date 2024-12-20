@@ -21,7 +21,7 @@ return new class extends Migration
                 $table->string('email',50)->unique();
                 $table->string('photo')->nullable();
                 $table->string('password');
-                $table->boolean('is_approved');
+                $table->integer('is_approved');
                 $table->timestamp('approved_at');
                 $table->rememberToken();
                 $table->timestamps();

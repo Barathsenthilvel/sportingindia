@@ -25,7 +25,7 @@ class UsersTableSeeder extends Seeder
             'email' => 'admin@yopmail.com',
             'photo' => null,
             'password' => Hash::make('admin@123'),
-            'is_approved' => true,
+            'is_approved' => 1,
             'approved_at' => now(),
             'created_at' => now(),
             'updated_at' => now()
