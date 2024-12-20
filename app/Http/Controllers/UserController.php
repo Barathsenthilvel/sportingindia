@@ -16,9 +16,9 @@ class UserController extends Controller
     {
         $summaryArr = User::where('role_id',2)->get()->groupBy('is_approved')->toArray();
 
-        $summary['pending_count']  =  count($summaryArr['0']);
-        $summary['approval_count'] =  count($summaryArr['1']);
-        $summary['rejected_count'] =  count($summaryArr['2']);
+        $summary['pending_count']  =  isset($summaryArr['0']) ? count($summaryArr['0']) : 0;
+        $summary['approval_count'] =  isset($summaryArr['1']) ? count($summaryArr['1']) : 0;
+        $summary['rejected_count'] =  isset($summaryArr['2']) ? count($summaryArr['2']) : 0;
 
         return view('user.dashboard')->with('summary',$summary);
     }
@@ -75,12 +75,13 @@ class UserController extends Controller
     {
         if($request->ajax())
         {
-            $users = User::where('role_id',2)->select(['id', 'name', 'email', 'created_at']);
+            $users = User::where('role_id',2)->where('is_approved',0)->select(['id', 'name', 'email', 'created_at']);
             return DataTables::of($users)
-                ->addColumn('action', function ($user) {
-                    return '<a href="/users/' . $user->id . '/approve" class="btn btn-sm btn-success">Approve</a> <a href="/users/' . $user->id . '/reject" class="btn btn-sm btn-danger">Reject</a>';
-                })
-                ->rawColumns(['action'])
+            ->addIndexColumn()
+            ->addColumn('action', function ($user) {
+                return '<a href="#" class="btn btn-sm btn-success" onclick="approveUser('.$user->id.')" >Approve</a> <a href="#" class="btn btn-sm btn-danger" onclick="rejectUser('.$user->id.')">Reject</a>';
+            })
+            ->rawColumns(['action'])
                 ->make(true);
         }
         else{
@@ -91,14 +92,92 @@ class UserController extends Controller
 
     }
 
-    public function getApprovedApplications()
+    public function getApprovedApplications(Request $request)
     {
-        return view('user.approvalapplications');
+        if($request->ajax())
+        {
+            $users = User::where('role_id',2)->where('is_approved',1)->select(['id', 'name', 'email', 'created_at']);
+            return DataTables::of($users)
+                 ->addIndexColumn()
+                ->make(true);
+        }
+        else{
+            return view('user.approvedapplications');
+        }
+
     }
 
-    public function getRejectedApplications()
+    public function getRejectedApplications(Request $request)
     {
-        return view('user.rejectapplications');
+        if($request->ajax())
+        {
+            $users = User::where('role_id',2)->where('is_approved',2)->select(['id', 'name', 'email', 'created_at']);
+            // dd($users);
+            return DataTables::of($users)
+                ->addIndexColumn()
+                ->make(true);
+        }
+        else{
+            return view('user.rejectapplications');
+        }
+    }
+
+    public function rejectApplication(Request $request)
+    {
+        $userId  = $request->userid;
+
+        $is_updated = User::where('id',$userId)->update(['is_approved' => 2]);
+
+        if($is_updated)
+        {
+            $response = [
+                'status' => 'success',
+                'message' => 'Application Rejected Successfully',
+            ];
+
+            return $response;
+        }
+        else{
+            $response = [
+                'status' => 'failed',
+                'message' => 'Something went wrong!!',
+            ];
+
+            return $response;
+        }
+    }
+
+
+    public function approveApplication(Request $request)
+    {
+        $userId  = $request->userid;
+
+        $is_updated = User::where('id',$userId)->update(['is_approved' => 1,'approved_at' => now()]);
+
+        if($is_updated)
+        {
+            $response = [
+                'status' => 'success',
+                'message' => 'Application Approved Successfully',
+            ];
+
+            return $response;
+        }
+        else{
+            $response = [
+                'status' => 'failed',
+                'message' => 'Something went wrong!!',
+            ];
+
+            return $response;
+        }
+    }
+
+
+
+    public function profilepage()
+    {
+        return view('user.profile');
     }
 
 

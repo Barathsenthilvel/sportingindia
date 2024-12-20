@@ -8,7 +8,7 @@
                 <h1 class="display-3">403</h1>
                 <h3 class="mb-4">Unauthorized Access</h3>
                 <p class="lead">Sorry, you are not authorized to access this page.</p>
-                <a href="{{ route('user.dashboard') }}" class="btn btn-primary">Go Back</a>
+                <a href="{{ route('user.profile') }}" class="btn btn-primary">Go Profile</a>
             </div>
         </div>
     </div>

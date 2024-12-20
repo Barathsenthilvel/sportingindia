@@ -1,22 +1,10 @@
 <!-- Main Content -->
 @extends('layouts.sidebar')
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 <div class="content" style="margin-left: 250px; padding-top: 70px;">
     @yield('content')
     <div class="container">
-        <h1>Rejectd Applications</h1>
-        <table id="reject-applications" class="display">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Created At</th>
-                </tr>
-            </thead>
-        </table>
+            <h1>My Profile Page</h1>
     </div>
-    {{-- csss --}}
 </div>
 
 <!-- Navbar -->
@@ -38,22 +26,7 @@
     </div>
 </nav>
 
-
+<!-- Bootstrap JS & jQuery -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-<script>
-    $(document).ready(function () {
-
-        $('#reject-applications').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{{ route('rejected.applications') }}',
-            columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                { data: 'name', name: 'name' },
-                { data: 'email', name: 'email' },
-                { data: 'created_at', name: 'created_at' },
-            ]
-        });
-    });
- </script>
 </html>

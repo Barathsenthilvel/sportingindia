@@ -25,6 +25,10 @@ class LoginController extends Controller
         ]);
 
         $user = null;
+        // if (filter_var($request->emailormobile, FILTER_VALIDATE_EMAIL)) {
+        //     $user = User::where('email', $request->emailormobile)->first();
+        // }
+
         if (filter_var($request->emailormobile, FILTER_VALIDATE_EMAIL)) {
             $user = User::where('email', $request->emailormobile)->first();
         } else {
@@ -33,17 +37,29 @@ class LoginController extends Controller
 
         if ($user && Hash::check($request->password, $user->password)) {
             Auth::login($user);
-            return redirect('/dashboard');
-        }
+            if ($user->is_approved == 0 &&  $user->role_id == '2') {
+                return redirect()->back()->with('error', 'User Not Approved by admin');
+            }
+            if($user->role_id == '1')
+            {
+                return redirect('/dashboard');
 
-        throw ValidationException::withMessages([
+            }
+            else{
+                return redirect('/profile');
+            }
+
+        }
+      else{
+        return redirect()->back()->with('error', throw ValidationException::withMessages([
             'email_or_mobile' => ['The provided credentials are incorrect.'],
-        ]);
+        ]));
+      }
+
     }
     catch(Exception $error)
     {
-        echo "error mess : ".$error->getMessage();
-        die('ddddddd');
+        return redirect()->back()->with('error', $error->getMessage());
     }
     }
 

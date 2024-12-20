@@ -4,7 +4,7 @@
 <div class="content" style="margin-left: 250px; padding-top: 70px;">
     @yield('content')
     <div class="container">
-        <h1>User List</h1>
+        <h1>Pending Applications</h1>
         <table id="pending-applications" class="display">
             <thead>
                 <tr>
@@ -47,7 +47,7 @@
             serverSide: true,
             ajax: '{{ route('pending.applications') }}',
             columns: [
-                { data: 'id', name: 'id' },
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'name', name: 'name' },
                 { data: 'email', name: 'email' },
                 { data: 'created_at', name: 'created_at' },
@@ -55,42 +55,59 @@
             ]
         });
 
+    });
+
         function approveUser(userid)
         {
+         const approved = confirm("Do you want to Approve the user?");
+
+          if (approved) {
             $.ajax({
-                url: '{{ route('approve.application') }}/'+userid,
+                url: '{{ route('approve.application') }}',
                 type: 'POST',
+                data : {
+                    userid : userid
+                },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
                     console.log('Success:', response);
+                    toastr.success(response.message);
+                    $('#pending-applications').DataTable().ajax.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);
+                    toastr.error('error');
                 }
             });
         }
+      }
 
         function rejectUser(userid)
         {
+         const approved = confirm("Do you want to reject the user?");
+
+         if (approved) {
             $.ajax({
-                url: '{{ route('reject.applications') }}/'+userid, // API endpoint
+                url: '{{ route('reject.application') }}', // API endpoint
                 type: 'POST',
+                data : {
+                    userid : userid
+                },
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function (response) {
                     console.log('Success:', response);
+                    toastr.success(response.message);
+                    $('#pending-applications').DataTable().ajax.reload();
                 },
                 error: function (xhr, status, error) {
                     console.error('Error:', error);
                 }
             });
-        }
-
-
-
-    });
+          }
+       }
 </script>
 </html>

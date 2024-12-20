@@ -4,8 +4,8 @@
 <div class="content" style="margin-left: 250px; padding-top: 70px;">
     @yield('content')
     <div class="container">
-        <h1>Rejectd Applications</h1>
-        <table id="reject-applications" class="display">
+        <h1>Approved Applications</h1>
+        <table id="approved-applications" class="display">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -16,7 +16,6 @@
             </thead>
         </table>
     </div>
-    {{-- csss --}}
 </div>
 
 <!-- Navbar -->
@@ -37,16 +36,14 @@
         </div>
     </div>
 </nav>
-
-
 </body>
 <script>
     $(document).ready(function () {
 
-        $('#reject-applications').DataTable({
+        $('#approved-applications').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ route('rejected.applications') }}',
+            ajax: '{{ route('approved.applications') }}',
             columns: [
                 { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'name', name: 'name' },
