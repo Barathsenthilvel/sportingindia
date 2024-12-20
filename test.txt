@@ -1,0 +1,44 @@
+1. Define Roles
+
+Create two roles in the application:
+    o Admin: Responsible for managing user applications.
+    o User: Can register and access their dashboard once approved.
+
+2. User Application Registration
+
+Implement a registration form with the following fields:
+o Name
+o Gender
+o Date of Birth (DOB)
+o Mobile Number
+o Email Address
+o Photo
+Ensure that the Email Address and Mobile Number are unique and cannot be reused for
+registration. After successful registration, send a confirmation email to the user using
+Laravel Jobs.
+
+3. Admin Panel
+
+The Admin login panel should include the following menus:
+o Dashboard: Displays a summary of application counts:
+ Pending Applications
+ Approved Applications
+ Rejected Applications
+o Pending Applications: Lists all newly registered applications. Admin can view
+each application and take the following actions:
+ Approve Application: Sends an approval email to the user with their
+username and password for login.
+ Reject Application: Sends a rejection email to the user with the reason for
+rejection.
+o Approved Applications: Lists all approved applications.
+o Rejected Applications: Lists all rejected applications.
+4. User Dashboard
+Users can log in using the credentials sent in the approval email. Once logged in, the user
+can view their My Profile page.
+
+Additional Notes
+     Use the latest Laravel version (Laravel 11).
+     Implement email functionality using the Jobs feature.
+     Create necessary database tables using Migrations.
+     Use Seeders to pre-populate the database with Admin credentials.
+     Implement Middleware to restrict access based on ro
