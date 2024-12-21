@@ -175,9 +175,13 @@ class UserController extends Controller
 
 
 
-    public function profilepage()
+    public function profilepage(Request $request)
     {
-        return view('user.profile');
+
+        $profile = auth()->user();
+
+        // dd($profile);
+        return view('user.profile', ['profile' => $profile]);
     }
 
 

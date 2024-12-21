@@ -14,8 +14,7 @@
             padding: 20px;
             background-color: #f8f9fa;
             border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
+            box-shadow: 1px 1px 36px black;        }
     </style>
 </head>
 <body>

@@ -1,13 +1,16 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
+use Illuminate\Support\Facades\Notification;
+use App\Mail\WelcomeEmail;  
+use App\Jobs\SendWelcomeEmailJob;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Notifications\RegisterUserNotification;
 
 class RegisterController extends Controller
 {
@@ -65,6 +68,25 @@ class RegisterController extends Controller
             'is_approved' => false,
             'approved_at' => null,
         ]);
+
+           // Dispatch the job
+    // SendWelcomeEmailJob::dispatch($user);
+
+    // $user = User::find(8); 
+    // dd($user);
+    // Replace 1 with a valid user ID
+// SendWelcomeEmailJob::dispatch($user);
+
+
+$admins =User::where('role_id',1)->get();
+
+Notification::send($admins, new RegisterUserNotification($user));
+
+$user->notify(new RegisterUserNotification($user));
+
+
+    // Mail::to($user->email)->send(new RegistrationSuccessMail($user));
+    
 
         return redirect()->back()->with('success', 'User registered successfully!');
     }

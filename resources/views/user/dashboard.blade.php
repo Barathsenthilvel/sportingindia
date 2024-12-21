@@ -62,6 +62,45 @@
         </div>
     </nav>
 
+
+<style>
+       .app-card {
+        background: linear-gradient(135deg, #1e90ff, #00bcd4);
+        color: white;
+        border-radius: 10px;
+        padding: 20px;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .app-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .app-card .icon {
+        font-size: 40px;
+        margin-bottom: 10px;
+    }
+
+    .app-card h4 {
+        font-size: 18px;
+        margin: 0;
+    }
+
+    .app-card span {
+        font-size: 24px;
+        font-weight: bold;
+    }
+</style>
+
+
+
+
+
+        
     <!-- Bootstrap JS & jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
